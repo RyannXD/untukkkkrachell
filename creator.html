@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Pembuat</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Segoe UI',sans-serif;
+  text-align:center;
+  color:white;
+  background:black;
+  overflow:hidden;
+}
+
+/* BG */
+.bg{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background-size:cover;
+  background-position:center;
+  transition:opacity 1.5s;
+  z-index:-3;
+}
+#bg2{opacity:0;}
+
+.overlay{
+  position:fixed;
+  width:100%;height:100%;
+  background:rgba(0,0,0,0.5);
+  z-index:-2;
+}
+
+/* NAV */
+.navbar{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:12px;
+  backdrop-filter:blur(10px);
+  background:rgba(0,0,0,0.3);
+  z-index:10;
+}
+.navbar a{
+  margin:5px;
+  padding:8px 16px;
+  border-radius:20px;
+  background:#ff4e80;
+  color:white;
+  text-decoration:none;
+}
+
+/* CARD */
+.card{
+  margin-top:140px;
+  padding:30px;
+  border-radius:20px;
+  background:rgba(0,0,0,0.4);
+  width:85%;
+  max-width:520px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* TITLE */
+h1{margin-bottom:10px;}
+
+/* CREATOR NAME */
+.creator-name{
+  margin-top:10px;
+  font-size:20px;
+  color:#ff9dbb;
+  font-weight:bold;
+}
+
+/* FOTO CREATOR */
+.creator-img{
+  width:120px;
+  border-radius:50%;
+  margin-top:15px;
+  border:3px solid white;
+  box-shadow:0 0 20px rgba(255,78,128,0.8);
+  animation:fadeIn 1.5s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:scale(0.8);}
+  to{opacity:1; transform:scale(1);}
+}
+
+/* TEXT */
+.desc{
+  margin-top:15px;
+  line-height:1.6;
+  opacity:0.9;
+}
+
+/* FAQ */
+.faq{
+  margin-top:20px;
+  text-align:left;
+}
+
+.faq-item{
+  margin-top:10px;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.q{
+  padding:10px;
+  background:#ff4e80;
+  cursor:pointer;
+  border-radius:10px;
+}
+
+.a{
+  max-height:0;
+  overflow:hidden;
+  background:rgba(255,255,255,0.1);
+  padding:0 10px;
+  transition:max-height 0.4s ease, padding 0.3s ease;
+}
+
+.faq-item.active .a{
+  max-height:100px;
+  padding:10px;
+}
+
+/* MUSIC */
+.music-btn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  padding:10px 15px;
+  border-radius:20px;
+  background:#ff4e80;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg1" class="bg"></div>
+<div id="bg2" class="bg"></div>
+<div class="overlay"></div>
+
+<div class="navbar">
+  <a href="index.html">Home</a>
+  <a href="kenangan.html">Kenangan</a>
+  <a href="tentang.html">Tentang</a>
+  <a href="creator.html">Pembuat</a>
+</div>
+
+<div class="card">
+  <h1>👤 Pembuat Website</h1>
+
+  <div class="creator-name">Iyannnnn</div>
+
+  <!-- FOTO KAMU -->
+  <img src="creator.jpg" class="creator-img">
+
+  <p class="desc">
+    Website ini dibuat sebagai bentuk kenangan kecil yang sederhana,
+    tapi penuh makna. 💖
+  </p>
+
+  <div class="faq">
+
+    <div class="faq-item">
+      <div class="q">❓ Kenapa dibuat?</div>
+      <div class="a">Ini adalah hadiah untuk seseorang yang paling spesial C:</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="q">❓ Dibuat pakai apa?</div>
+      <div class="a">HTML, CSS, dan sedikit JavaScript gampang kok</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="q">❓ Berapa lama buatnya?</div>
+      <div class="a">aku buat 2 hari dari tanggal 20</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="q">❓ Pesan dari pembuat?</div>
+      <div class="a">semogaa kamuuu sukaa yaaa, maaff kalauuu takkk baguss dannn maaff jikaa hadiahh nyaaa takkk bisaa diii peganggg</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="music-btn" onclick="toggleMusic()">🔊</div>
+
+<audio id="music" loop>
+  <source src="hbd.mp3">
+</audio>
+
+<script>
+/* BG */
+const images=["bg1.jpg","bg2.jpg","bg3.jpg"];
+let i=0,active=1;
+
+function changeBG(){
+  let next=(active===1)?2:1;
+  document.getElementById("bg"+next).style.backgroundImage=`url(${images[i]})`;
+  document.getElementById("bg"+next).style.opacity=1;
+  document.getElementById("bg"+active).style.opacity=0;
+  active=next;
+  i=(i+1)%images.length;
+}
+setInterval(changeBG,5000);
+changeBG();
+
+/* MUSIC */
+const music=document.getElementById("music");
+
+document.addEventListener("click",()=>{
+  if(music.paused){
+    music.play().catch(()=>{});
+  }
+},{once:true});
+
+function toggleMusic(){
+  if(music.paused){music.play();}
+  else{music.pause();}
+}
+
+/* FAQ CLICK */
+document.querySelectorAll(".faq-item").forEach(item=>{
+  item.querySelector(".q").addEventListener("click",()=>{
+    item.classList.toggle("active");
+  });
+});
+</script>
+
+</body>
+</html>

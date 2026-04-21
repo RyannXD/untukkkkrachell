@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Kenangan</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:'Segoe UI',sans-serif;
+  text-align:center;
+  color:white;
+  background:black;
+  overflow:hidden;
+}
+
+/* BG */
+.bg{
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background-size:cover;
+  background-position:center;
+  transition:opacity 1.5s;
+  z-index:-4;
+}
+#bg2{opacity:0;}
+
+/* OVERLAY */
+.overlay{
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.55);
+  z-index:-3;
+}
+
+/* NAV */
+.navbar{
+  position:fixed;
+  top:0; width:100%;
+  padding:12px;
+  backdrop-filter:blur(10px);
+  background:rgba(0,0,0,0.4);
+  z-index:10;
+}
+.navbar a{
+  margin:5px;
+  padding:8px 16px;
+  border-radius:20px;
+  background:#ff4e80;
+  color:white;
+  text-decoration:none;
+}
+
+/* TITLE TENGAH */
+.center-title{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  font-size:42px;
+  font-weight:700;
+  letter-spacing:4px;
+  color:rgba(255,255,255,0.95);
+  text-shadow: 
+    0 0 20px rgba(255,78,128,0.8),
+    0 0 40px rgba(255,215,0,0.4);
+  z-index:5;
+  pointer-events:none;
+  animation: titleFloat 6s ease-in-out infinite;
+  white-space:nowrap;
+}
+@keyframes titleFloat{
+  0%,100%{ transform:translate(-50%, -50%) translateY(0); }
+  50%{ transform:translate(-50%, -50%) translateY(-15px); }
+}
+
+/* FLOATING HEARTS */
+.heart{
+  position:fixed;
+  font-size:28px;
+  z-index:-1;
+  animation: heartRise 9s linear forwards;
+  opacity:0.9;
+}
+@keyframes heartRise{
+  from{ transform:translateY(110vh); }
+  to{ transform:translateY(-20vh); }
+}
+
+/* SLIDESHOW - EFEK KEN BURNS ADVANCE */
+.slide{
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  opacity:0;
+  z-index:-2;
+  transition: opacity 2.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1.08);
+}
+
+.slide.active{
+  opacity:1;
+  animation: kenBurns 12s ease-in-out infinite;
+  transform: scale(1);
+}
+
+@keyframes kenBurns {
+  0%   { transform: scale(1.08) translate(0px, 0px); }
+  50%  { transform: scale(1.03) translate(12px, -8px); }
+  100% { transform: scale(1.08) translate(0px, 0px); }
+}
+
+/* CAPTION */
+.caption{
+  position:fixed;
+  bottom:100px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,0.65);
+  color:white;
+  padding:14px 32px;
+  border-radius:30px;
+  font-size:18px;
+  z-index:6;
+  opacity:0;
+  transition: all 1s ease;
+  box-shadow: 0 0 25px rgba(255,78,128,0.5);
+}
+.caption.show{
+  opacity:1;
+  bottom:130px;
+}
+
+/* MUSIC BUTTON */
+.music-btn{
+  position:fixed;
+  bottom:20px; right:20px;
+  padding:10px 15px;
+  border-radius:20px;
+  background:#ff4e80;
+  cursor:pointer;
+  z-index:10;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg1" class="bg"></div>
+<div id="bg2" class="bg"></div>
+<div class="overlay"></div>
+
+<div class="navbar">
+  <a href="index.html">Home</a>
+  <a href="kenangan.html">Kenangan</a>
+  <a href="tentang.html">Tentang</a>
+  <a href="creator.html">Pembuat</a>
+</div>
+
+<!-- TITLE TENGAH -->
+<div class="center-title">
+  Kenangan Bersama Rachel ❤️
+</div>
+
+<!-- SLIDES -->
+<img src="kenangan1.jpg" class="slide active" data-caption="Hari pertama ketemu kamu ✨">
+<img src="kenangan2.jpg" class="slide" data-caption="Jalan-jalan bareng yang bikin ketawa terus 😂">
+<img src="kenangan3.jpg" class="slide" data-caption="Momen paling manis yang gak akan terlupakan 💕">
+
+<!-- CAPTION -->
+<div class="caption" id="caption"></div>
+
+<div class="music-btn" onclick="toggleMusic()">🔊</div>
+
+<audio id="music" loop>
+  <source src="kenangan.mp3">
+</audio>
+
+<script>
+/* BG */
+const images=["bg1.jpg","bg2.jpg","bg3.jpg"];
+let i=0, activeBG=1;
+function changeBG(){
+  let next = (activeBG===1)?2:1;
+  document.getElementById("bg"+next).style.backgroundImage = `url(${images[i]})`;
+  document.getElementById("bg"+next).style.opacity = 1;
+  document.getElementById("bg"+activeBG).style.opacity = 0;
+  activeBG = next;
+  i = (i+1)%images.length;
+}
+setInterval(changeBG, 5000);
+changeBG();
+
+/* FLOATING HEARTS */
+function launchHearts(){
+  const emojis = ['❤️','💖','💗','💘','💝'];
+  setInterval(() => {
+    if(Math.random() > 0.35){
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      h.style.left = Math.random()*95 + 'vw';
+      h.style.animationDuration = (8 + Math.random()*7) + 's';
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 16000);
+    }
+  }, 380);
+}
+
+/* SLIDESHOW OTOMATIS */
+let slides = document.querySelectorAll('.slide');
+let captions = Array.from(slides).map(s => s.dataset.caption);
+let current = 0;
+let captionEl = document.getElementById('caption');
+
+function showSlide(){
+  slides.forEach(s => s.classList.remove('active'));
+  slides[current].classList.add('active');
+  
+  captionEl.textContent = captions[current];
+  captionEl.classList.remove('show');
+  setTimeout(() => captionEl.classList.add('show'), 400);
+}
+
+/* AUTO SLIDE (pindah sendiri) */
+setInterval(() => {
+  current = (current + 1) % slides.length;
+  showSlide();
+}, 4500);
+
+/* AUDIO */
+const music = document.getElementById("music");
+document.addEventListener("click", () => {
+  if(music.paused) music.play().catch(()=>{});
+}, {once:true});
+
+function toggleMusic(){
+  if(music.paused) music.play();
+  else music.pause();
+}
+
+/* START */
+launchHearts();
+showSlide();
+</script>
+
+</body>
+</html>
